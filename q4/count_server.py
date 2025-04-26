@@ -15,12 +15,10 @@ def split_text_into_chunks(text, num_chunks):
 
 def handle_client(client_socket, chunk, results, index):
     try:
-        # Send the chunk to the client
         client_socket.sendall(chunk.encode())
 
-        # Receive word count result (receive once)
-        data = client_socket.recv(8192)  # receive all data in one go
-        partial_count = eval(data.decode())  # CAUTION: unsafe in real projects
+        data = client_socket.recv(8192) 
+        partial_count = eval(data.decode()) 
 
         results[index] = partial_count
     finally:
@@ -33,7 +31,7 @@ def main():
 
     print("Server listening on 127.0.0.1 5555")
 
-    num_clients = 4  # 🔥 make sure client count matches
+    num_clients = 4  
     results = [None] * num_clients
 
     # Load text file
@@ -50,17 +48,14 @@ def main():
         thread.start()
         threads.append(thread)
 
-    # Wait for all client threads
     for thread in threads:
         thread.join()
 
-    # Merge all partial results
     merged_word_count = defaultdict(int)
     for partial in results:
         for word, count in partial.items():
             merged_word_count[word] += count
 
-    # Display top N most frequent words
     N = 10
     top_words = sorted(merged_word_count.items(), key=lambda x: x[1], reverse=True)[:N]
     print("\nTop words:")
