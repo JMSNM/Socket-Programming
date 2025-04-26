@@ -1,4 +1,4 @@
-# Socket Programming Assignment 3
+# Socket-Programming-In-Python
 
 This project implements a distributed system using **Python socket programming** for:
 
